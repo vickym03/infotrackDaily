@@ -10,7 +10,7 @@ function App() {
     <div className="App">
       {/* <Axios/> */}
       {/* <FormS/> */}
-      <MappsG/>
+     
     </div>
   );
 }
