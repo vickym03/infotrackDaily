@@ -1,67 +1,57 @@
+import React from 'react'
+import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 
 
-// import React from 'react'
-// import GoogleMapReact from 'google-map-react'
+const containerStyle = {
+  width: '400px',
+  height: '400px'
+};
 
-// let mapOptions = {
-//     center: { lat: 39.56939, lng: -40.0000 },
-//     zoom: 3.5,
-//     disableDefaultUI: true,
-//     gestureHandling: 'none',
-//     zoomControl: false,
-//     scaleControl: false,
-//     zoomControlOptions: false,
-//     scrollwheel: false,
-//     panControl: false,
-//   };
-// function Gmapss({ data, state }) {
+const center = {
+  lat: -3.745,
+  lng: -38.523
+};
 
-//     console.log(data.models)
+function Gmapss() {
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    // googleMapsApiKey:"https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap",
+      googleMapsApiKey:"https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback",
 
-//     function initMap() {
+    
+  })
 
-//         let markers = [
-//          /.../
-//         ];
+  const [map, setMap] = React.useState(null)
 
-//         function Marker(props) {
+  const onLoad = React.useCallback(function callback(map) {
+    const bounds = new window.google.maps.LatLngBounds();
+    map.fitBounds(bounds);
+    setMap(map)
+  }, [])
 
-//             let marker = new google.maps.marker({
-//                 position: props.coords,
-//                 content: props.content,
-//                 icon: props.icon,
-//                 map: map
-//             });
-
-//             let infoWindow = new google.maps.InfoWindow({
-//                 content: props.content
-//             });
-
-//             Marker.addListener('click', function () {
-//                 infoWindow.open(map, marker);
-//             })
-//         }
-//     }
-//      // useEffect(initMap, []); it will only render once 
-//     return (
-//         <div style={{height: '100vh', width: '100%' }}>
-//             <GoogleMapReact
-//                 bootstrapURLKeys={{ key: "YOUR_API_KEY" }}
-//                 defaultCenter={{lat: 39.56939, lng: -40.0000 }}
-//                 defaultZoom={3.5}
-//                 options={mapOptions}
-//                 yesIWantToUseGoogleMapApiInternals
-//                 onGoogleApiLoaded={({ map, maps }) => Gmapss(map, maps)}
-//                 >
-                
-//             </GoogleMapReact>
-//         </div>
-//     );
-// }
-// export default Gmapss;
+  const onUnmount = React.useCallback(function callback(map) {
+    setMap(null)
+  }, [])
 
 
 
+
+  return isLoaded ? (
+    <GoogleMap
+      mapContainerStyle={containerStyle}
+      center={center}
+      zoom={10}
+      onLoad={onLoad}
+      onUnmount={onUnmount}
+    >
+      { /* Child components, such as markers, info windows, etc. */ }
+      <></>
+    </GoogleMap>
+) : <></>
+  
+}
+
+export default Gmapss
 
 
 

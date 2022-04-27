@@ -6,8 +6,8 @@ import Chart from './comp/Chart';
 function App() {
   return (
     <div className="App">
-      {/* <Gmapss/> */}
-      <Chart/>
+      <Gmapss/>
+      {/* <Chart/> */}
     </div>
   );
 }
