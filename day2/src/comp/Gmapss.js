@@ -16,7 +16,7 @@ function Gmapss() {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     // googleMapsApiKey:"https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap",
-      googleMapsApiKey:"https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback",
+      googleMapsApiKey:"https://maps.googleapis.com/maps/api/js?key=AIzaSyDKdb_ZU2VZCe8kyj3o8hz7zQ0TehgaoXI",
 
     
   })
