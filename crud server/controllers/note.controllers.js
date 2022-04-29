@@ -1,80 +1,76 @@
-const Note = require("../model/Note.model");
+const Note = require('../model/Note.model');
 
-//CREATE A SAVE NEW NOTE................
+// Create and Save a new Note
 exports.create = (req, res) => {
-  //validate the response
-  if (!req.body.content) {
-    return res.status(400).send({
-      message: "can not be empty",
+    // Validate request
+    if(!req.body.content) {
+        return res.status(400).send({
+            message: "Note content can not be empty"
+        });
+    }
+
+    // Create a Note
+    const note = new Note({
+        title: req.body.title || "Untitled Note", 
+        content: req.body.content
     });
-  }
 
-  //create a note
-  const note = new Note({
-    title: req.body.title || "untitle note",
-    content: req.body.content,
-  });
-
-  //save data
-  note.save().then((data) => {
-    req.send(data).then((err) => {
-      req.status(500).send({
-        message: err.message || "error on creating the  Note",
-      });
-    });
-  });  
-};  
-
-//RETRIVE DATA................................
-exports.findAll = (req, res) => {
-  Note.find()
-    .then((notes) => {
-      res.send(notes);
-    })
-    .catch((err) => {
-      req.status(500).send({
-        message: err.message || "error on creating the  Note",
-      });
+    // Save Note in the database
+    note.save()
+    .then(data => {
+        res.send(data);
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message || "Some error occurred while creating the Note."
+        });
     });
 };
 
-// SINGLE DATA FETCH......................
-exports.findOne = (req, res) => {
+// Retrieve and return all notes from the database.
+exports.findAll = (req, res) => {
+    Note.find()
+    .then(notes => {
+        res.send(notes);
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message || "Some error occurred while retrieving notes."
+        });
+    });
+};
 
+// Find a single note with a noteId
+exports.findOne = (req, res) => {
     Note.findById(req.params.noteId)
-    .then((note)=>{
-        if(!note){
+    .then(note => {
+        if(!note) {
             return res.status(404).send({
                 message: "Note not found with id " + req.params.noteId
-            })
+            });            
         }
         res.send(note);
-    }).catch((err)=>{
-        if(err.kind ==="objectID"){
+    }).catch(err => {
+        if(err.kind === 'ObjectId') {
             return res.status(404).send({
-                message:"Note not found with id" + req.params.noteId
-            });
+                message: "Note not found with id " + req.params.noteId
+            });                
         }
         return res.status(500).send({
-            message:"Error reterving while data" + req.params.noteId
-        })
-    })
+            message: "Error retrieving note with id " + req.params.noteId
+        });
+    });
 };
 
-//UPDATE DATA
-
+// Update a note identified by the noteId in the request
 exports.update = (req, res) => {
+    // Validate Request
+    if(!req.body.content) {
+        return res.status(400).send({
+            message: "Note content can not be empty"
+        });
+    }
 
-  //validate the response
-  if (!req.body.content) {
-    return res.status(400).send({
-      message: "can not be empty",
-    });
-  }
-
-
-  //find note and update it with the request bidy
- Note.findByIdAndUpdate(req.params.noteId, {
+    // Find note and update it with the request body
+    Note.findByIdAndUpdate(req.params.noteId, {
         title: req.body.title || "Untitled Note",
         content: req.body.content
     }, {new: true})
@@ -97,12 +93,8 @@ exports.update = (req, res) => {
     });
 };
 
-
-
-// DELETE DATA
-
+// Delete a note with the specified noteId in the request
 exports.delete = (req, res) => {
-
     Note.findByIdAndRemove(req.params.noteId)
     .then(note => {
         if(!note) {
@@ -121,5 +113,4 @@ exports.delete = (req, res) => {
             message: "Could not delete note with id " + req.params.noteId
         });
     });
-
 };
