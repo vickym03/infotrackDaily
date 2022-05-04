@@ -8,8 +8,8 @@ import FormS from './component/FormS';
 function App() {
   return (
     <div className="App">
-      <Axios/>
-      {/* <FormS/> */}
+      {/* <Axios/> */}
+      <FormS/>
      
     </div>
   );
